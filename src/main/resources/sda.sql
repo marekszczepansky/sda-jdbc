@@ -7,7 +7,7 @@
 -- Started on 2017-02-02 12:01:07
 
 SET statement_timeout = 0;
-SET client_encoding = 'WIN1250';
+SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -16,6 +16,7 @@ SET client_min_messages = warning;
 -- TOC entry 6 (class 2615 OID 90115)
 -- Name: sda; Type: SCHEMA; Schema: -; Owner: postgres
 --
+DROP SCHEMA IF EXISTS sda CASCADE;
 
 CREATE SCHEMA sda;
 
@@ -30,7 +31,7 @@ SET default_with_oids = false;
 
 --
 -- TOC entry 172 (class 1259 OID 90161)
--- Name: dept; Type: TABLE; Schema: sda; Owner: postgres; Tablespace: 
+-- Name: dept; Type: TABLE; Schema: sda; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE dept (
@@ -45,7 +46,7 @@ ALTER TABLE sda.dept OWNER TO postgres;
 
 --
 -- TOC entry 174 (class 1259 OID 90170)
--- Name: emp; Type: TABLE; Schema: sda; Owner: postgres; Tablespace: 
+-- Name: emp; Type: TABLE; Schema: sda; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE emp (
@@ -98,7 +99,7 @@ INSERT INTO emp VALUES (7654, 'MARTIN', 'SALESMAN', 7698, '1998-12-05', 1250, 14
 
 --
 -- TOC entry 1934 (class 2606 OID 90178)
--- Name: dept_pkey; Type: CONSTRAINT; Schema: sda; Owner: postgres; Tablespace: 
+-- Name: dept_pkey; Type: CONSTRAINT; Schema: sda; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY dept
@@ -107,7 +108,7 @@ ALTER TABLE ONLY dept
 
 --
 -- TOC entry 1936 (class 2606 OID 90180)
--- Name: emp_pkey; Type: CONSTRAINT; Schema: sda; Owner: postgres; Tablespace: 
+-- Name: emp_pkey; Type: CONSTRAINT; Schema: sda; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY emp
@@ -129,3 +130,25 @@ ALTER TABLE ONLY emp
 -- PostgreSQL database dump complete
 --
 
+CREATE OR REPLACE FUNCTION sda.calculate_salary_by_dept(v_deptno integer)
+  RETURNS numeric AS
+$BODY$
+    DECLARE
+       cur_deps  CURSOR FOR
+	 Select sum(e.salary)
+	 from sda.dept d, sda.emp e
+	WHERE d.deptno = e.deptno
+	 AND d.deptno = v_deptno;
+	v_salary NUMERIC;
+    BEGIN
+      OPEN cur_deps;
+      FETCH cur_deps INTO v_salary;
+      CLOSE cur_deps;
+
+      return v_salary;
+    END;
+    $BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION sda.calculate_salary_by_dept(integer)
+  OWNER TO postgres;
