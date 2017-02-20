@@ -39,7 +39,6 @@ public class EmpDAOJdbcImplTest {
         assertEquals("SMITH", employee.getEname());
         assertEquals("CLERK", employee.getJob());
         assertEquals(sdf.parse("1993-06-13"), employee.getHiredate());
-        assertEquals(BigDecimal.valueOf(800), employee.getSalary());
         assertTrue(BigDecimal.valueOf(800.00).compareTo(employee.getSalary())==0);
         assertTrue(BigDecimal.valueOf(0.00).compareTo(employee.getCommision())==0);
 
@@ -58,8 +57,8 @@ public class EmpDAOJdbcImplTest {
         assertEquals(employeeFromDB.getEname(), newEmployee.getEname());
         assertEquals(employeeFromDB.getJob(), newEmployee.getJob());
         assertEquals(employeeFromDB.getHiredate(), newEmployee.getHiredate());
-        assertEquals(employeeFromDB.getSalary(), newEmployee.getSalary());
-        assertEquals(employeeFromDB.getCommision(), newEmployee.getCommision());
+        assertTrue(employeeFromDB.getSalary().compareTo(newEmployee.getSalary()) ==0);
+        assertTrue(employeeFromDB.getCommision().compareTo(newEmployee.getCommision()) ==0);
         assertEquals(employeeFromDB.getDeptno(), newEmployee.getDeptno());
     }
 
@@ -73,13 +72,12 @@ public class EmpDAOJdbcImplTest {
         employee = empDAO.findById(7369);
 
         assertNotNull(employee);
-        assertEquals(7369, employee.getDeptno());
+        assertEquals(20, employee.getDeptno());
         assertEquals("SMITH", employee.getEname());
         assertEquals("SUPERCLERK", employee.getJob());
         assertEquals(sdf.parse("1993-06-13"), employee.getHiredate());
-        assertEquals(BigDecimal.valueOf(800), employee.getSalary());
-        assertEquals(BigDecimal.valueOf(0.0), employee.getCommision());
-        assertEquals(20, employee.getDeptno());
+        assertTrue(BigDecimal.valueOf(800).compareTo(employee.getSalary()) == 0);
+        assertTrue(BigDecimal.valueOf(800.00).compareTo(employee.getSalary()) == 0);
 
     }
 
@@ -113,18 +111,16 @@ public class EmpDAOJdbcImplTest {
         assertEquals(employeeFromDB1.getEname(), newEmployee1.getEname());
         assertEquals(employeeFromDB1.getJob(), newEmployee1.getJob());
         assertEquals(employeeFromDB1.getHiredate(), newEmployee1.getHiredate());
-        assertEquals(employeeFromDB1.getSalary(), newEmployee1.getSalary());
-        assertEquals(employeeFromDB1.getCommision(), newEmployee1.getCommision());
-        assertEquals(employeeFromDB1.getDeptno(), newEmployee1.getDeptno());
+        assertTrue(employeeFromDB1.getSalary().compareTo(newEmployee1.getSalary())==0);
+        assertTrue(employeeFromDB1.getCommision().compareTo(newEmployee1.getCommision())==0);
 
         assertNotNull(employeeFromDB2);
         assertEquals(employeeFromDB2.getEmpno(), newEmployee2.getDeptno());
         assertEquals(employeeFromDB2.getEname(), newEmployee2.getEname());
         assertEquals(employeeFromDB2.getJob(), newEmployee2.getJob());
         assertEquals(employeeFromDB2.getHiredate(), newEmployee2.getHiredate());
-        assertEquals(employeeFromDB2.getSalary(), newEmployee2.getSalary());
-        assertEquals(employeeFromDB2.getCommision(), newEmployee2.getCommision());
-        assertEquals(employeeFromDB2.getDeptno(), newEmployee2.getDeptno());
+        assertTrue(employeeFromDB2.getSalary().compareTo(newEmployee2.getSalary())==0);
+        assertTrue(employeeFromDB2.getCommision().compareTo(newEmployee2.getCommision())==0);
     }
 
     @Test(expected=SQLException.class)
