@@ -53,7 +53,7 @@ public class EmpDAOJdbcImplTest {
         Employee employeeFromDB = empDAO.findById(9000);
 
         assertNotNull(employeeFromDB);
-        assertEquals(employeeFromDB.getEmpno(), newEmployee.getDeptno());
+        assertEquals(employeeFromDB.getEmpno(), newEmployee.getEmpno());
         assertEquals(employeeFromDB.getEname(), newEmployee.getEname());
         assertEquals(employeeFromDB.getJob(), newEmployee.getJob());
         assertEquals(employeeFromDB.getHiredate(), newEmployee.getHiredate());
@@ -107,7 +107,7 @@ public class EmpDAOJdbcImplTest {
         Employee employeeFromDB2 = empDAO.findById(9001);
 
         assertNotNull(employeeFromDB1);
-        assertEquals(employeeFromDB1.getEmpno(), newEmployee1.getDeptno());
+        assertEquals(employeeFromDB1.getEmpno(), newEmployee1.getEmpno());
         assertEquals(employeeFromDB1.getEname(), newEmployee1.getEname());
         assertEquals(employeeFromDB1.getJob(), newEmployee1.getJob());
         assertEquals(employeeFromDB1.getHiredate(), newEmployee1.getHiredate());
@@ -115,7 +115,7 @@ public class EmpDAOJdbcImplTest {
         assertTrue(employeeFromDB1.getCommision().compareTo(newEmployee1.getCommision())==0);
 
         assertNotNull(employeeFromDB2);
-        assertEquals(employeeFromDB2.getEmpno(), newEmployee2.getDeptno());
+        assertEquals(employeeFromDB2.getEmpno(), newEmployee2.getEmpno());
         assertEquals(employeeFromDB2.getEname(), newEmployee2.getEname());
         assertEquals(employeeFromDB2.getJob(), newEmployee2.getJob());
         assertEquals(employeeFromDB2.getHiredate(), newEmployee2.getHiredate());
@@ -145,7 +145,7 @@ public class EmpDAOJdbcImplTest {
     public void getTotalSalaryByDept() throws Exception {
         BigDecimal salaryFor10Dept = empDAO.getTotalSalaryByDept(10);
 
-        assertEquals(8750, salaryFor10Dept);
+        assertTrue(new BigDecimal("8750").compareTo(salaryFor10Dept) == 0);
     }
 
 }
