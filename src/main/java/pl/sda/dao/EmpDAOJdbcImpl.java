@@ -34,12 +34,28 @@ public class EmpDAOJdbcImpl implements EmpDAO {
 
     @Override
     public Employee findById(int id) throws Exception {
+        //Nawiązujemy połaczenie z bazą danych. Metoda jdbcConnectionManager.getConnection() zwraca nowe połączenie z bazą
+        //Połaczenie znajduje się w bloku try with resources który zapewnia zamknięcie połączenia po zakończeniu bloku
+        //try(Pobranie zasobu, np polaczenia){
+        //   jakies operacje,
+        //}
         try(Connection conn = jdbcConnectionManager.getConnection()) {
+            //Stworzenie obiektu ktory reprezentuje polecenie sql w bazie danych. Do obiektu przekazujemy tresc zapytania, czyli np.
+            //"SELECT empno, ename, job, manager, hiredate, salary, commision, deptno FROM Emp WHERE empno = ?"
+            //Zapytanie pobiera z bazy danych dane pracoownika ktorego identyfikator (empno) jest rowny zadanemu parametrowi
+            //Pobierane sa nastepujace dane pracownika: empno, ename, job, manager, hiredate, salary, commision, deptno
             PreparedStatement ps = conn.prepareStatement(QUERY_BY_ID);
+            //Ustawiamy wartosc podstawiona pod pierwszy znak zapytania
+            //Poniewaz id jest typu int  uzywamy ps.setInt
             ps.setInt(1, id);
 
+            //Wykonujemy zapytanie (utworzone wczesniej)
             ResultSet rs = ps.executeQuery();
+            //Przechodzimy od pierwszego do ostatniego wyniku zapytania  rs.next() pobiera kolejny wiersz. Gdy
+            //rs.next() zwroci false konczy sie petla while(){] i wychodzimy z funkcji
             while (rs.next()) {
+                //Wywolujemy funkcje prywatna ktora skonwertuje wiersz ResultSet do obiektu Employee
+                //Kod funkcji ponizej
                 Employee emp = mapFromResultSet(rs);
                 return emp;
             }
@@ -49,11 +65,16 @@ public class EmpDAOJdbcImpl implements EmpDAO {
     }
     
     private Employee mapFromResultSet(ResultSet rs) throws SQLException {
+        //Pobieramy kazda kolumne z wiersza z bazy danych. Musimy pamietac ze tekst w rs.getInt("empno") okresla nazwe kolumny w klauzuli SELECT polecenia SQL
+        //Dla typu int uzywamy rs.getInt()
         int empno = rs.getInt("empno");
+        //Dla typu string uzywamy rs.getString() - kolumna ename musi istniec w klauzuli SELECT
         String ename = rs.getString("ename");
         String job = rs.getString("job");
         int manager = rs.getInt("manager");
+        //Dla typu date uzywamy rs.getDate()
         Date hiredate = rs.getDate("hiredate");
+        //Dla typu BigDecimal (uzwyana bardza czesto do reprezentacji pieniedzy) uzywamy rs.getBigDecimal()
         BigDecimal salary = rs.getBigDecimal("salary");
         BigDecimal commision = rs.getBigDecimal("commision");
         int deptno = rs.getInt("deptno");
