@@ -36,11 +36,19 @@
       </dependency>
 
 
+      <!--<dependency>-->
+          <!--<groupId>org.postgresql</groupId>-->
+          <!--<artifactId>postgresql</artifactId>-->
+          <!--<version>9.4.1211</version>-->
+      <!--</dependency>-->
+
       <dependency>
-          <groupId>org.postgresql</groupId>
-          <artifactId>postgresql</artifactId>
-          <version>9.4.1211</version>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <version>1.4.196</version>
+          <scope>test</scope>
       </dependency>
+
 
   </dependencies>
 
