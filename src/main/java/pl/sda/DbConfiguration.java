@@ -47,8 +47,7 @@ public class DbConfiguration {
 
     public static DbConfiguration loadConfiguration() throws IOException {
         Properties props = new Properties();
-        props.load(DbConfiguration.class.getClassLoader()
-                .getResourceAsStream("dbconfig.properties"));
+        props.load(DbConfiguration.class.getClassLoader().getResourceAsStream("dbconfig.properties"));
         DbConfiguration dbConfiguration = new DbConfiguration(props.getProperty("jdbcurl"), props.getProperty("username"), props.getProperty("password"), props.getProperty("schema"));
         System.out.println("Configuration created with the following values: " + dbConfiguration.toString());
 

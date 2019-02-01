@@ -20,4 +20,8 @@ public interface EmpDAO {
     void create(List<Employee> employees) throws Exception;
 
     BigDecimal getTotalSalaryByDept(int dept) throws Exception;
+
+    List<Employee> findAll() throws Exception;
+
+    List<Employee> findByJob(String name) throws Exception;
 }
