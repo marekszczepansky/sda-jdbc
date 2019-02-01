@@ -12,7 +12,6 @@ import java.util.Properties;
  */
 class JdbcConnectionManager {
 
-    private static final int SCHEMA_NOT_FOUND_ERROR = 90079;
     private final DbConfiguration dbConfiguration;
 
     JdbcConnectionManager(DbConfiguration dbConfiguration) {
@@ -20,19 +19,7 @@ class JdbcConnectionManager {
     }
 
     Connection getConnection() throws SQLException {
-        Properties info = new Properties();
-        info.setProperty("user", dbConfiguration.getUsername());
-        info.setProperty("password", dbConfiguration.getPassword());
-        info.setProperty("schema", dbConfiguration.getSchema());
-        try {
-            return DriverManager.getConnection(dbConfiguration.getJdbcUrl(), info);
-        } catch (SQLException e) {
-            if (e.getErrorCode() == SCHEMA_NOT_FOUND_ERROR) {
-                info.remove("schema");
-                return DriverManager.getConnection(dbConfiguration.getJdbcUrl(), info);
-            }
-            throw e;
-        }
+        return DriverManager.getConnection(dbConfiguration.getJdbcUrl(), dbConfiguration.getUsername(), dbConfiguration.getPassword());
     }
 
 }
