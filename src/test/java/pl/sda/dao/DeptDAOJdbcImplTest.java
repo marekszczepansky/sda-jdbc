@@ -21,7 +21,7 @@ public class DeptDAOJdbcImplTest {
     @Before
     public void init() throws IOException, ClassNotFoundException, SQLException {
         JdbcConnectionManager jdbcConnectionManager = new JdbcConnectionManager(DbConfiguration.loadConfiguration());
-        deptDAO =  new DeptDAOJdbcImpl(jdbcConnectionManager);
+        deptDAO = new DeptDAOJdbcImpl(jdbcConnectionManager);
         TestUtil.cleanUpDatabase(jdbcConnectionManager);
     }
 
@@ -75,4 +75,13 @@ public class DeptDAOJdbcImplTest {
         assertNull(department);
     }
 
+    @Test
+    public void createMultipleDepartmentsAllOk() {
+        fail("not implemented");
+    }
+
+    @Test
+    public void createMultipleDepartmentsSecondFail() {
+        fail("not implemented");
+    }
 }

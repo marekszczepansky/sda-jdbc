@@ -134,4 +134,14 @@ public class EmpDAOJdbcImpl implements EmpDAO {
         }
         return null;
     }
+
+    @Override
+    public List<Employee> findAll() throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Employee> findByJob(String name) throws Exception {
+        return null;
+    }
 }

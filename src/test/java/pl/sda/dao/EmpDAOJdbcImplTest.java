@@ -148,4 +148,14 @@ public class EmpDAOJdbcImplTest {
         assertTrue(new BigDecimal("8750").compareTo(salaryFor10Dept) == 0);
     }
 
+    @Test
+    public void findAll() {
+        fail("not implemented");
+    }
+
+    @Test
+    public void findByJob() {
+        fail("not implemented");
+    }
+
 }
