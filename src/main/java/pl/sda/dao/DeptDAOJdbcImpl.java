@@ -6,11 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by pzawa on 02.02.2017.
  */
-public class DeptDAOJdbcImpl implements DeptDAO{
+public class DeptDAOJdbcImpl implements GenericDAO<Department>{
     private static String QUERY_BY_ID  = "SELECT deptno, dname, location FROM Dept WHERE deptno = ?";
     private static String INSERT_STMT = "INSERT INTO Dept(deptno, dname, location) VALUES(?,?,?)";
     private static String UPDATE_STMT= "UPDATE Dept set dname = ?, location = ?  WHERE deptno = ?";
@@ -85,5 +86,10 @@ public class DeptDAOJdbcImpl implements DeptDAO{
 
             System.out.println("DeptDAO.delete() number of affected rows: " + numberOfAffectedRows);
         }
+    }
+
+    @Override
+    public void create(List<Department> employees) throws Exception {
+
     }
 }

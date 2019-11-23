@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class DeptDAOJdbcImplTest {
 
-    private DeptDAO deptDAO;
+    private GenericDAO<Department> deptDAO;
 
     @Before
     public void init() throws IOException, ClassNotFoundException, SQLException {
@@ -75,4 +75,13 @@ public class DeptDAOJdbcImplTest {
         assertNull(department);
     }
 
+    @Test
+    public void createMultipleDepartmentsAllOk() {
+        fail("not implemented");
+    }
+
+    @Test
+    public void createMultipleDepartmentsSecondFail() {
+        fail("not implemented");
+    }
 }

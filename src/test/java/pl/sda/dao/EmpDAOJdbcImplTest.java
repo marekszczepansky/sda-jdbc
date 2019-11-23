@@ -148,4 +148,41 @@ public class EmpDAOJdbcImplTest {
         assertTrue(new BigDecimal("8750").compareTo(salaryFor10Dept) == 0);
     }
 
+    @Test
+    public void findAll() throws Exception {
+        List<Employee> employeeList = empDAO.findAll();
+        assertEquals(14, employeeList.size());
+
+        Employee employee1 = employeeList.get(0);
+        assertEquals(20, employee1.getDeptno());
+        assertEquals("SMITH", employee1.getEname());
+        assertEquals("CLERK", employee1.getJob());
+
+        Employee employee2 = employeeList.get(13);
+        assertEquals(30, employee2.getDeptno());
+        assertEquals("MARTIN", employee2.getEname());
+        assertEquals("SALESMAN", employee2.getJob());
+    }
+
+    @Test
+    public void findByJob() throws Exception {
+        final String jobName = "SALESMAN";
+        List<Employee> byJob = empDAO.findByJob(jobName);
+        assertEquals(4, byJob.size());
+
+        Employee employee1 = byJob.get(0);
+        assertEquals(30, employee1.getDeptno());
+        assertEquals("ALLEN", employee1.getEname());
+        assertEquals(jobName, employee1.getJob());
+
+        Employee employee2 = byJob.get(3);
+        assertEquals(30, employee2.getDeptno());
+        assertEquals("MARTIN", employee2.getEname());
+        assertEquals(jobName, employee2.getJob());
+
+        for (Employee employee : byJob) {
+            assertEquals(jobName, employee.getJob());
+        }
+    }
+
 }
