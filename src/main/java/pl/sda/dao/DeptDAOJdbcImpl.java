@@ -88,7 +88,7 @@ public class DeptDAOJdbcImpl extends EntityDAOImpl<Department> implements DeptDA
     }
 
     @Override
-    public void create(List<Department> employees) throws Exception {
+    public void create(List<Department> departments) throws Exception {
 
     }
 }
