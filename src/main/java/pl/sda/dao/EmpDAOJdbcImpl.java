@@ -4,22 +4,25 @@ import pl.sda.domain.Employee;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by pzawa on 02.02.2017.
  */
-public class EmpDAOJdbcImpl implements EmpDAO {
+public class EmpDAOJdbcImpl extends EntityDAOImpl<Employee> implements EmpDAO {
+
+    public static final String FIND_BY_JOB = "select * from emp where job = ?";
+    public static final String FIND_ALL = "select * from emp";
 
     private static final String QUERY_BY_ID = "select * from Emp where empno = ?";
     private static final String INSERT_STMT = "insert into Emp (empno, ename, job, manager, hiredate, salary, commision, deptno) values(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_STMT = "update emp set ename = ?, job = ?, manager = ?, hiredate = ?, salary = ?, commision = ?, deptno = ? where empno = ?";
     private static final String DELETE_STMT = "delete from emp where empno = ?";
     private static final String QUERY_SALARY_BY_DEPT = "select sum(salary) from emp where deptno = ?";
-    private final JdbcConnectionManager jdbcConnectionManager;
 
-    EmpDAOJdbcImpl(JdbcConnectionManager jdbcConnectionManager) {
-        this.jdbcConnectionManager = jdbcConnectionManager;
+    public EmpDAOJdbcImpl(JdbcConnectionManager jdbcConnectionManager) {
+        super(jdbcConnectionManager);
     }
 
     @Override
@@ -137,11 +140,28 @@ public class EmpDAOJdbcImpl implements EmpDAO {
 
     @Override
     public List<Employee> findAll() throws Exception {
-        return null;
+        try (Connection conn = jdbcConnectionManager.getConnection()) {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(FIND_ALL);
+            List<Employee> result = new ArrayList<>();
+            while(resultSet.next()) {
+                result.add(mapFromResultSet(resultSet));
+            }
+            return result;
+        }
     }
 
     @Override
     public List<Employee> findByJob(String name) throws Exception {
-        return null;
+        try (Connection conn = jdbcConnectionManager.getConnection()) {
+            PreparedStatement preparedStatement = conn.prepareStatement(FIND_BY_JOB);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Employee> result = new ArrayList<>();
+            while(resultSet.next()) {
+                result.add(mapFromResultSet(resultSet));
+            }
+            return result;
+        }
     }
 }

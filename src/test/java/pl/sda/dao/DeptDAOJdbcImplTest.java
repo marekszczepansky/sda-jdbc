@@ -2,14 +2,17 @@ package pl.sda.dao;
 
 import org.junit.Before;
 import org.junit.Test;
+import pl.sda.DatabaseUtil;
 import pl.sda.DbConfiguration;
 import pl.sda.domain.Department;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 /**
  * Created by pzawa on 02.02.2017.
@@ -19,10 +22,10 @@ public class DeptDAOJdbcImplTest {
     private DeptDAO deptDAO;
 
     @Before
-    public void init() throws IOException, ClassNotFoundException, SQLException {
+    public void init() throws IOException, SQLException {
         JdbcConnectionManager jdbcConnectionManager = new JdbcConnectionManager(DbConfiguration.loadConfiguration());
         deptDAO = new DeptDAOJdbcImpl(jdbcConnectionManager);
-        TestUtil.cleanUpDatabase(jdbcConnectionManager);
+        DatabaseUtil.cleanUpDatabase(jdbcConnectionManager);
     }
 
     @Test

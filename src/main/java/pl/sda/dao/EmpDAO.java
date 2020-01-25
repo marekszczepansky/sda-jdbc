@@ -8,14 +8,7 @@ import java.util.List;
 /**
  * Created by pzawa on 02.02.2017.
  */
-public interface EmpDAO {
-    Employee findById(int id) throws Exception;
-
-    void create(Employee employee) throws Exception;
-
-    void update(Employee employee) throws Exception;
-
-    void delete(int id) throws Exception;
+public interface EmpDAO extends EntityDAO<Employee> {
 
     void create(List<Employee> employees) throws Exception;
 

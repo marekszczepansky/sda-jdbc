@@ -1,9 +1,8 @@
 package pl.sda.dao;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import pl.sda.DatabaseUtil;
 import pl.sda.DbConfiguration;
 import pl.sda.domain.Employee;
 
@@ -14,7 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Created by pzawa on 02.02.2017.
@@ -24,10 +27,10 @@ public class EmpDAOJdbcImplTest {
     private EmpDAO empDAO;
 
     @Before
-    public void init() throws IOException, ClassNotFoundException, SQLException {
+    public void init() throws IOException, SQLException {
         JdbcConnectionManager jdbcConnectionManager = new JdbcConnectionManager(DbConfiguration.loadConfiguration());
         empDAO =  new EmpDAOJdbcImpl(jdbcConnectionManager);
-        TestUtil.cleanUpDatabase(jdbcConnectionManager);
+        DatabaseUtil.cleanUpDatabase(jdbcConnectionManager);
     }
 
     @Test
@@ -149,13 +152,40 @@ public class EmpDAOJdbcImplTest {
     }
 
     @Test
-    public void findAll() {
-        fail("not implemented");
+    public void findAll() throws Exception {
+        List<Employee> employeeList = empDAO.findAll();
+        assertEquals(14, employeeList.size());
+
+        Employee employee1 = employeeList.get(0);
+        assertEquals(20, employee1.getDeptno());
+        assertEquals("SMITH", employee1.getEname());
+        assertEquals("CLERK", employee1.getJob());
+
+        Employee employee2 = employeeList.get(13);
+        assertEquals(30, employee2.getDeptno());
+        assertEquals("MARTIN", employee2.getEname());
+        assertEquals("SALESMAN", employee2.getJob());
     }
 
     @Test
-    public void findByJob() {
-        fail("not implemented");
+    public void findByJob() throws Exception {
+        final String jobName = "SALESMAN";
+        List<Employee> byJob = empDAO.findByJob(jobName);
+        assertEquals(4, byJob.size());
+
+        Employee employee1 = byJob.get(0);
+        assertEquals(30, employee1.getDeptno());
+        assertEquals("ALLEN", employee1.getEname());
+        assertEquals(jobName, employee1.getJob());
+
+        Employee employee2 = byJob.get(3);
+        assertEquals(30, employee2.getDeptno());
+        assertEquals("MARTIN", employee2.getEname());
+        assertEquals(jobName, employee2.getJob());
+
+        for (Employee employee : byJob) {
+            assertEquals(jobName, employee.getJob());
+        }
     }
 
 }
