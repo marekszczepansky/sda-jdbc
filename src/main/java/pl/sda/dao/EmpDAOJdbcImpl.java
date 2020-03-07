@@ -17,7 +17,7 @@ public class EmpDAOJdbcImpl implements EmpDAO {
 
     private final JdbcConnectionManager jdbcConnectionManager;
 
-    public EmpDAOJdbcImpl(JdbcConnectionManager jdbcConnectionManager){
+    public EmpDAOJdbcImpl(JdbcConnectionManager jdbcConnectionManager) {
         this.jdbcConnectionManager = jdbcConnectionManager;
     }
 
@@ -55,14 +55,14 @@ public class EmpDAOJdbcImpl implements EmpDAO {
             PreparedStatement ps = conn.prepareStatement(
                     "insert into Emp (empno, ename, job, manager, hiredate, salary, commision, deptno) values(?, ?, ?, ?, ?, ?, ?, ?)");
 
-            prepareStatement(employee, ps);
+            setCreateStatement(employee, ps);
 
             int numberOfAffectedRows = ps.executeUpdate();
             System.out.println("EmpDAO.create() number of affected rows: " + numberOfAffectedRows);
         }
     }
 
-    private void prepareStatement(Employee employee, PreparedStatement ps) throws SQLException {
+    private void setCreateStatement(Employee employee, PreparedStatement ps) throws SQLException {
         ps.setInt(1, employee.getEmpno());
         ps.setString(2, employee.getEname());
         ps.setString(3, employee.getJob());
@@ -108,7 +108,18 @@ public class EmpDAOJdbcImpl implements EmpDAO {
     }
 
     @Override
-    public void create(List<Employee> employees) throws Exception {
+    public void create(List<Employee> employees) throws SQLException {
+        try (Connection conn = jdbcConnectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            PreparedStatement ps = conn.prepareStatement(
+                    "insert into Emp (empno, ename, job, manager, hiredate, salary, commision, deptno) values(?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            for (Employee employee : employees) {
+                setCreateStatement(employee, ps);
+                ps.executeUpdate();
+            }
+            conn.commit();
+        }
     }
 
     @Override
