@@ -96,8 +96,15 @@ public class EmpDAOJdbcImpl implements EmpDAO {
     }
 
     @Override
-    public void delete(int id) throws Exception {
+    public void delete(int id) throws SQLException {
+        try (Connection conn = jdbcConnectionManager.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("delete from emp where empno = ?");
+            ps.setInt(1, id);
 
+            int numberOfAffectedRows = ps.executeUpdate();
+
+            System.out.println("EmpDAO.delete() number of affected rows: " + numberOfAffectedRows);
+        }
     }
 
     @Override
