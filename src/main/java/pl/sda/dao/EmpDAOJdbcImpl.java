@@ -20,6 +20,7 @@ public class EmpDAOJdbcImpl implements EmpDAO {
     public EmpDAOJdbcImpl(JdbcConnectionManager jdbcConnectionManager){
         this.jdbcConnectionManager = jdbcConnectionManager;
     }
+
     @Override
     public Employee findById(int id) throws SQLException {
         try (Connection conn = jdbcConnectionManager.getConnection()) {
@@ -73,8 +74,25 @@ public class EmpDAOJdbcImpl implements EmpDAO {
     }
 
     @Override
-    public void update(Employee employee) throws Exception {
+    public void update(Employee employee) throws SQLException {
+        try (Connection conn = jdbcConnectionManager.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(
+                    "update emp set ename = ?, job = ?, manager = ?, hiredate = ?, salary = ?, commision = ?, deptno = ? where empno = ?");
 
+            ps.setString(1, employee.getEname());
+            ps.setString(2, employee.getJob());
+            ps.setInt(3, employee.getManager());
+            ps.setDate(4, new Date(employee.getHiredate().getTime()));
+            ps.setBigDecimal(5, employee.getSalary());
+            ps.setBigDecimal(6, employee.getCommision());
+            ps.setInt(7, employee.getDeptno());
+
+            ps.setInt(8, employee.getEmpno());
+
+            int numberOfAffectedRows = ps.executeUpdate();
+
+            System.out.println("EmpDAO.update() number of affected rows: " + numberOfAffectedRows);
+        }
     }
 
     @Override
