@@ -9,11 +9,6 @@ import java.sql.SQLException;
 
 public class JDBCFirstApp {
     public static void main(String[] args) throws SQLException, IOException {
-//        JdbcConnectionManager jdbcConnectionManager = new JdbcConnectionManager(DbConfiguration.loadConfiguration());
-//        DatabaseUtil.cleanUpDatabase(jdbcConnectionManager);
-
-//        EmpDAOJdbcImpl empDAO = new EmpDAOJdbcImpl(jdbcConnectionManager);
-//        DeptDAOJdbcImpl deptDAO = new DeptDAOJdbcImpl(jdbcConnectionManager);
 
         final DbConfiguration dbConfiguration = DbConfiguration.loadConfiguration();
         final String jdbcUrl = dbConfiguration.getJdbcUrl();
