@@ -25,7 +25,8 @@ public class DeptDAOJdbcImpl implements DeptDAO{
     @Override
     public Department findById(int id) throws SQLException {
         try(Connection conn = jdbcConnectionManager.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(QUERY_BY_ID);
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT deptno, dname, location FROM Dept WHERE deptno = ?");
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
@@ -50,7 +51,8 @@ public class DeptDAOJdbcImpl implements DeptDAO{
     @Override
     public void create(Department department) throws SQLException {
         try (Connection conn = jdbcConnectionManager.getConnection()){
-            PreparedStatement ps = conn.prepareStatement(INSERT_STMT);
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO Dept(deptno, dname, location) VALUES(?,?,?)");
             ps.setInt(1, department.getDeptno());
             ps.setString(2, department.getDname());
             ps.setString(3, department.getLocation());
@@ -64,7 +66,8 @@ public class DeptDAOJdbcImpl implements DeptDAO{
     @Override
     public void update(Department department) throws SQLException {
         try(Connection conn = jdbcConnectionManager.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(UPDATE_STMT);
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE Dept set dname = ?, location = ?  WHERE deptno = ?");
             ps.setString(1, department.getDname());
             ps.setString(2, department.getLocation());
             ps.setInt(3, department.getDeptno());
@@ -78,7 +81,7 @@ public class DeptDAOJdbcImpl implements DeptDAO{
     @Override
     public void delete(int id) throws SQLException {
         try(Connection conn = jdbcConnectionManager.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(DELETE_STMT);
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM Dept WHERE deptno = ?");
             ps.setInt(1, id);
 
             int numberOfAffectedRows = ps.executeUpdate();

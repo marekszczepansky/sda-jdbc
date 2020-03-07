@@ -19,7 +19,9 @@ class JdbcConnectionManager {
     }
 
     Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(dbConfiguration.getJdbcUrl(), dbConfiguration.getUsername(), dbConfiguration.getPassword());
+        return DriverManager.getConnection(dbConfiguration.getJdbcUrl(),
+                dbConfiguration.getUsername(),
+                dbConfiguration.getPassword());
     }
 
 }

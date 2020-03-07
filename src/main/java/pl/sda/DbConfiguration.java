@@ -51,7 +51,10 @@ public class DbConfiguration {
         Properties props = new Properties();
         props.load(DbConfiguration.class.getClassLoader()
                 .getResourceAsStream("dbconfig.properties"));
-        DbConfiguration dbConfiguration = new DbConfiguration(props.getProperty("jdbcurl"), props.getProperty("username"), props.getProperty("password"), props.getProperty("schema"));
+        DbConfiguration dbConfiguration = new DbConfiguration(props.getProperty("jdbcurl"),
+                props.getProperty("username"),
+                props.getProperty("password"),
+                props.getProperty("schema"));
         System.out.println("Configuration created with the following values: " + dbConfiguration.toString());
 
         return dbConfiguration;
