@@ -124,6 +124,15 @@ public class EmpDAOJdbcImpl implements EmpDAO {
 
     @Override
     public BigDecimal getTotalSalaryByDept(int dept) throws Exception {
+        try (Connection conn = jdbcConnectionManager.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("select sum(salary) from emp where deptno = ?");
+            ps.setInt(1, dept);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getBigDecimal(1);
+            }
+        }
         return null;
     }
 }
