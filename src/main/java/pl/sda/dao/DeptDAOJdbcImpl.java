@@ -29,9 +29,8 @@ public class DeptDAOJdbcImpl implements DeptDAO{
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Department department = mapFromResultSet(rs);
-                return department;
+            if (rs.next()) {
+                return mapFromResultSet(rs);
             }
 
         }
@@ -44,7 +43,6 @@ public class DeptDAOJdbcImpl implements DeptDAO{
         String location = rs.getString("location");
 
         return new Department(deptno, dname, location);
-
     }
 
     @Override

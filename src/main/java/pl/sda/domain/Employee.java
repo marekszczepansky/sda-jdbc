@@ -21,7 +21,14 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int empno, String ename, String job, Integer manager, Date hiredate, BigDecimal salary, BigDecimal commision, int deptno) {
+    public Employee(int empno,
+                    String ename,
+                    String job,
+                    Integer manager,
+                    Date hiredate,
+                    BigDecimal salary,
+                    BigDecimal commision,
+                    int deptno) {
         this.empno = empno;
         this.ename = ename;
         this.job = job;
